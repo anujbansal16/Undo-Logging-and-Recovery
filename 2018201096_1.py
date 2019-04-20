@@ -9,9 +9,6 @@ ramVars={}
 tempVars={}
 class Transaction(object):
 	"""docstring for Transaction"""
-	
-
-
 
 
 def readInput(filename):

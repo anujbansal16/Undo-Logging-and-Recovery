@@ -1,0 +1,12 @@
+A 1 B 1 C 1 D 1 E 1 F 1
+
+<START T1>
+< T1 , A , 5>
+< START T2>
+< T2, B , 10>
+< START CKPT (T1, T2) >
+< T2, C , 15 >
+< START T3>
+< T1 ,D,20>
+<COMMIT T1 >
+< T3, E , 25>
