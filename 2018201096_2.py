@@ -4,6 +4,12 @@ diskVars={}
 transactions={}
 instructions=[]
 
+def printVars():
+	print("Disk Variables")
+	for var in sorted(diskVars.keys()):
+		print(var,diskVars[var],end=" ")
+	print()
+
 def readInput(filename):
 	#read all instructions
 	instructions=open(filename, "r").readlines()	
@@ -27,7 +33,7 @@ def makeChanges(trans,var,val):
 			return
 	transactions[trans]=False
 	diskVars[var]=val
-	print(diskVars)
+	printVars()
 
 def handleIncomActive(incmTrans,index):
 	print("handleIncomActive")
@@ -60,7 +66,7 @@ def recover():
 			if endCheckPt:
 				#scaned all incomplete transactions b/w start and end chkpt
 				print("Im done")
-				print(diskVars)
+				printVars()
 				break
 			else:
 				print("Need to search active list")
@@ -78,7 +84,7 @@ def recover():
 						transactions[t]=False
 						incmTrans.append(t)
 				handleIncomActive(incmTrans,index+1)
-				print("ads", diskVars)
+				printVars()
 				break
 
 
@@ -106,3 +112,9 @@ if __name__ == "__main__":
 		exit(0)
 	instructions=readInput(sys.argv[1])
 	recover()
+
+	#write final outcome in file
+	wFile=open("2018201096_2.txt", "w")
+	for var in sorted(diskVars.keys()):
+		wFile.write(var+" "+str(diskVars[var])+" ")
+	wFile.write("\n")

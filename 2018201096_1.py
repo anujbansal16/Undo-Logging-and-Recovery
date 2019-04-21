@@ -7,6 +7,7 @@ x=None
 diskVars={}
 ramVars={}
 tempVars={}
+wFile=None
 class Transaction(object):
 	"""docstring for Transaction"""
 
@@ -54,11 +55,15 @@ def printVars():
 	for var in sorted(ramVars.keys()):
 		if ramVars[var]!=None:
 			print(var,ramVars[var],end=" ")
+			wFile.write(var+" "+str(ramVars[var])+" ")
 			printNtg=False
 	print()
+	wFile.write("\n")
 	for var in sorted(diskVars.keys()):
 		print(var,diskVars[var],end=" ")
+		wFile.write(var+" " +str(diskVars[var])+" ")
 	print()
+	wFile.write("\n")
 
 def executeInst(instruction,trans):
 	if "READ" in instruction:
@@ -73,6 +78,7 @@ def executeInst(instruction,trans):
 		# print("Write")
 		var,temp=instruction[6:-1].split(",")
 		print("<%s, %s, %d>"%(trans.name,var,ramVars[var]))
+		wFile.write("<%s, %s, %d>\n"%(trans.name,var,ramVars[var]))
 		var,temp=var.strip(),temp.strip()
 		ramVars[var]=tempVars[temp]
 		printVars()
@@ -115,6 +121,7 @@ def createUndoLog():
 		for trans in DBtransactions:
 			if trans.current==0:
 				print("<START %s>"%(trans.name))
+				wFile.write("<START %s>\n"%(trans.name))
 				printVars()
 				trans.current=1
 
@@ -124,6 +131,7 @@ def createUndoLog():
 				executeInst(trans.actions[i],trans)
 				if i==int(trans.n):
 					print("<COMMIT %s>"%(trans.name))
+					wFile.write("<COMMIT %s>\n"%(trans.name))
 					printVars()
 				count+=1
 			trans.current=trans.current+x
@@ -135,6 +143,7 @@ if __name__ == "__main__":
 		exit(0)
 	x=int(sys.argv[2])
 	readInput(sys.argv[1])
+	wFile=open("2018201096_1.txt", "w")
 	createUndoLog()
 
 	
